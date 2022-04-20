@@ -43,19 +43,23 @@ if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin
     echo "<textarea cols=25 rows = 1 name='people'>3</textarea>";
     echo "<textarea cols=25 rows = 1 name='checkin'>2022-03-23</textarea>";
     echo "<textarea cols=25 rows = 1 name='checkout'>2022-03-24</textarea>";
+    echo "<textarea cols=25 rows = 1 name='minprice'>0</textarea>";
+    echo "<textarea cols=25 rows = 1 name='maxprice'>100000</textarea>";
     echo "<input type=submit>";
     echo "</form>";
 }
 else{
 
-    $airbnb_url = "https://www.airbnb.com/s/LOCATION/homes?tab_id=home_tab&refinement_paths%5B%5D=%2Fhomes&flexible_trip_dates%5B%5D=april&flexible_trip_dates%5B%5D=march&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&checkin=CHECKIN&checkout=CHECKOUT&adults=PEOPLE&source=structured_search_input_header&search_type=filter_change";
-    $vrbo_url = "https://www.vrbo.com/search/keywords:LOCATION/arrival:CHECKIN/departure:CHECKOUT/minNightlyPrice/0?filterByTotalPrice=true&petIncluded=false&ssr=true&adultsCount=PEOPLE&childrenCount=0";
-    $expedia_url = "https://www.expedia.com/Hotel-Search?adults=2&d1=CHECKIN&d2=CHECKOUT&destination=LOCATION&endDate=CHECKOUT&rooms=1&semdtl=&sort=RECOMMENDED&startDate=CHECKOUT&theme=&useRewards=true&userIntent=";
+    $airbnb_url = "https://www.airbnb.com/s/LOCATION/homes?tab_id=home_tab&refinement_paths%5B%5D=%2Fhomes&flexible_trip_dates%5B%5D=april&flexible_trip_dates%5B%5D=march&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&checkin=CHECKIN&checkout=CHECKOUT&adults=PEOPLE&price_max=MAXPRICE&price_min=MINPRICE&source=structured_search_input_header&search_type=filter_change";
+    $vrbo_url = "https://www.vrbo.com/search/keywords:LOCATION/arrival:CHECKIN/departure:CHECKOUT/minNightlyPrice/MINPRICE/maxNightlyPrice/MAXPRICE?filterByTotalPrice=true&petIncluded=false&ssr=true&adultsCount=PEOPLE&childrenCount=0";
+    $expedia_url = "https://www.expedia.com/Hotel-Search?adults=2&d1=CHECKIN&d2=CHECKOUT&destination=LOCATION&endDate=CHECKOUT&rooms=1&price=MINPRICE&price=MAXPRICE&semdtl=&sort=RECOMMENDED&startDate=CHECKOUT&theme=&useRewards=true&userIntent=";
 
     $location = $_GET["location"];
     $people = $_GET["people"];
     $checkin = $_GET["checkin"];
     $checkout = $_GET["checkout"];
+    $minprice = $_GET["minprice"];
+    $maxprice = $_GET["maxprice"];
 
     $airbnb_url = str_replace("LOCATION", $location, $airbnb_url);
     $vrbo_url = str_replace("LOCATION", $location, $vrbo_url);
@@ -72,6 +76,68 @@ else{
     $airbnb_url = str_replace("PEOPLE", $people, $airbnb_url);
     $vrbo_url = str_replace("PEOPLE", $people, $vrbo_url);
     $expedia_url = str_replace("PEOPLE", $people, $expedia_url);
+    
+    // checks if min/max price have changed, if not works with default settings
+    if ($minprice != 0 || $maxprice != 100000) {
+            $airbnb_url = str_replace("MAXPRICE", $maxprice, $airbnb_url);
+            $airbnb_url = str_replace("MINPRICE", $minprice, $airbnb_url);
+            $vrbo_url = str_replace("MAXPRICE", $maxprice, $vrbo_url);
+            $vrbo_url = str_replace("MINPRICE", $minprice, $vrbo_url);
+            
+            $expedia_min = 5;
+            $expedia_max = 5;
+            if($minprice < 75 && $minprice != 0) {
+                $expedia_min = 0;
+            }
+            else if($minprice >= 75 && $minprice <=125) {
+                $expedia_min = 1;
+            }
+            else if($minprice >= 125 && $minprice <=200) {
+                $expedia_min = 2;
+            }
+            else if($minprice >= 200 && $minprice <=300) {
+                $expedia_min = 3;
+            }
+            else if($minprice > 300) {
+                $expedia_min = 4;
+            }
+        
+            if($maxprice < 75) {
+                $expedia_max = 0;
+            }
+            else if($maxprice >= 75 && $maxprice <=125) {
+                $expedia_max = 1;
+            }
+            else if($maxprice >= 125 && $maxprice <=200) {
+                $expedia_max = 2;
+            }
+            else if($maxprice >= 200 && $maxprice <=300) {
+                $expedia_max = 3;
+            }
+            else if($maxprice > 300 && $maxprice != 100000) {
+                $expedia_max = 4;
+            }
+            if($expedia_min != 5) {
+                $expedia_url = str_replace("MINPRICE", $expedia_min, $expedia_url);
+            }
+            else {
+                $expedia_url = str_replace("price=MINPRICE&","",$expedia_url);   
+            }
+            if($expedia_max != 5) {
+                $expedia_url = str_replace("MAXPRICE", $expedia_max, $expedia_url);
+            }
+            else {
+                $expedia_url = str_replace("price=MAXPRICE&","",$expedia_url);   
+            }
+    }
+    else {
+        $airbnb_url = str_replace("price_max=MAXPRICE&price_min=MINPRICE&", "",$airbnb_url);
+        $vrbo_url = str_replace("/maxNightlyPrice/MAXPRICE", "", $vrbo_url);
+        $vrbo_url = str_replace("MINPRICE", 0, $vrbo_url);
+        
+        
+        
+    }
 
     echo $airbnb_url;
     echo "<br>";
