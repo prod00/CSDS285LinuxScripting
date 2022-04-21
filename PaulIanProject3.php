@@ -141,12 +141,7 @@ else{
         
         
     }
-    echo "1";
-    $html = new simple_html_dom();
-    $html -> load_file($airbnb_url);
-    echo "2";
-    echo $html;
-    echo "3";
+
 
 
     echo "<a href='{$airbnb_url}' class='link' target='_blank'>Custom Airbnb Link</a>";
