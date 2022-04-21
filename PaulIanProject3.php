@@ -34,25 +34,28 @@
 </style>
 
 <?php
-
+use voku\helper\HtmlDomParser;
 if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin"]) and empty($_GET["location"])){
 
     echo "<h2>Enter a Loction: </h2>";
-    echo "<form action='project2.php' method='GET'>";
+    echo "<form action='PaulIanProject3.php' method='GET'>";
     echo "<textarea cols=25 rows = 1 name='location'>Tampa</textarea>";
     echo "<textarea cols=25 rows = 1 name='people'>3</textarea>";
-    echo "<textarea cols=25 rows = 1 name='checkin'>2022-03-23</textarea>";
-    echo "<textarea cols=25 rows = 1 name='checkout'>2022-03-24</textarea>";
-    echo "<textarea cols=25 rows = 1 name='minprice'>0</textarea>";
-    echo "<textarea cols=25 rows = 1 name='maxprice'>100000</textarea>";
+    echo "<textarea cols=25 rows = 1 name='checkin'>2022-06-23</textarea>";
+    echo "<textarea cols=25 rows = 1 name='checkout'>2022-06-24</textarea>";
+    echo "<textarea cols=25 rows = 1 name='minprice'>100</textarea>";
+    echo "<textarea cols=25 rows = 1 name='maxprice'>200</textarea>";
     echo "<input type=submit>";
     echo "</form>";
 }
 else{
 
+
     $airbnb_url = "https://www.airbnb.com/s/LOCATION/homes?tab_id=home_tab&refinement_paths%5B%5D=%2Fhomes&flexible_trip_dates%5B%5D=april&flexible_trip_dates%5B%5D=march&flexible_trip_lengths%5B%5D=weekend_trip&date_picker_type=calendar&checkin=CHECKIN&checkout=CHECKOUT&adults=PEOPLE&price_max=MAXPRICE&price_min=MINPRICE&source=structured_search_input_header&search_type=filter_change";
     $vrbo_url = "https://www.vrbo.com/search/keywords:LOCATION/arrival:CHECKIN/departure:CHECKOUT/minNightlyPrice/MINPRICE/maxNightlyPrice/MAXPRICE?filterByTotalPrice=true&petIncluded=false&ssr=true&adultsCount=PEOPLE&childrenCount=0";
     $expedia_url = "https://www.expedia.com/Hotel-Search?adults=2&d1=CHECKIN&d2=CHECKOUT&destination=LOCATION&endDate=CHECKOUT&rooms=1&price=MINPRICE&price=MAXPRICE&semdtl=&sort=RECOMMENDED&startDate=CHECKOUT&theme=&useRewards=true&userIntent=";
+
+
 
     $location = $_GET["location"];
     $people = $_GET["people"];
@@ -138,12 +141,18 @@ else{
         
         
     }
+    echo "1";
+    $html = new simple_html_dom();
+    $html -> load_file($airbnb_url);
+    echo "2";
+    echo $html;
+    echo "3";
 
-    echo $airbnb_url;
+
+    echo "<a href='{$airbnb_url}' class='link' target='_blank'>Custom Airbnb Link</a>";
+    echo "<a href='{$vrbo_url}' class='link' target='_blank'>Custom Vrbo Link</a>";
+    echo "<a href='{$expedia_url}' class='link' target='_blank'>Custom Expedia Link</a>";
     echo "<br>";
-    echo $vrbo_url;
-    echo "<br>";
-    echo $expedia_url;
 
     function getBetween($string, $start = "", $end = ""){
         if (strpos($string, $start)) { // required if $start not exist in $string
@@ -186,6 +195,5 @@ else{
   echo "<input type='text' name='inputText'/>";
   echo "<input type='submit' name='SubmitButton'/>";
   echo "</form>";
-  echo htmlentities(file_get_contents($expedia_url));
 }
 ?>
