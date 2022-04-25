@@ -60,14 +60,21 @@ function array_to_table($array) {
 
 }
 
-if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin"]) and empty($_GET["location"])){
+if (empty($_GET["location"]) and empty($_GET["adults"]) and empty($_GET["adultswork"]) and empty($_GET["kids"]) and empty($_GET["position"])){
     echo "<form action='tests.php' method='GET'>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='location' placeholder='City'></textarea>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='adults' placeholder='Adults'></textarea>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='adultswork' placeholder='Adults Working'></textarea>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='kids' placeholder='Kids'></textarea>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='position' placeholder='Position'></textarea>";
+    echo "<br>";
     echo "<textarea cols=25 rows = 1 name='yoe' placeholder='Years Of Experience'></textarea>";
+    echo "<br>";
     echo "<input type=submit>";
     echo "</form>";
 
@@ -77,7 +84,7 @@ else {
     $location = strtolower($_GET["location"]);
     $locations = array(
         "boston" => "14460",
-        "new york city" => "35620",
+        "new york" => "35620",
         "chicago" => "16980",
         "los angeles" => "31080",
         "houston" => "26420",
@@ -91,7 +98,6 @@ else {
         "jacksonville" => "27260",
         "san francisco" => "41860",
         "seattle" => "42660",
-        "san diego" => "41740",
         "miami" => "33100",
         "nashville" => "34980",
         "el paso" => "21340",
@@ -177,16 +183,16 @@ else {
         $message = "we have found 0 salaries of your position in the area lower than your cost of living";
 
     } else if ($before_taxes < intval($decoded_output["twentieth"])) {
-        $message = "you need to make above the 0th percentile and less than the 25th percentile: $" . intval($decoded_output["zeroth"]) . " - $" . intval($decoded_output["twentieth"]);
+        $message = "you need to make above the 0th percentile: $" . intval($decoded_output["zeroth"]);
 
     } else if ($before_taxes < intval($decoded_output["fiftieth"])) {
-        $message = "you need to make above the 25th percentile and less than 50th percentile: $" . intval($decoded_output["twentieth"]) . " - $" . intval($decoded_output["fiftieth"]);
+        $message = "you need to make above the 25th percentile: $" . intval($decoded_output["twentieth"]);
 
     } else if ($before_taxes < intval($decoded_output["seventy_fifth"])) {
-        $message = "you need to make above the 50th percentile and less than 75th percentile: $" . intval($decoded_output["fiftieth"]) . " - $" . intval($decoded_output["seventy_fifth"]);
+        $message = "you need to make above the 50th percentile: $" . intval($decoded_output["fiftieth"]);
 
     } else if ($before_taxes < intval($decoded_output["one_hundreth"])) {
-        $message = "you need to make above the 75th percentile and less than the 100th percentile: $" . intval($decoded_output["seventy_fifth"]) . " - $" . intval($decoded_output["one_hundreth"]);
+        $message = "you need to make above the 75th percentile: $" . intval($decoded_output["seventy_fifth"]);
 
     } else {
         $message = "we have found 0 salaries of your position in the area higher than your cost of living";
@@ -196,12 +202,12 @@ else {
     # Output all column data
     echo "<div style='display: flex'>";
     echo "<div style='flex: 50%; padding: 10px; text-align: center; background-color: lightgray'>";
-    echo "<h2>Salary Information:</h2>";
+    echo "<h2>Custom Salary Information:</h2>";
     array_to_table($decoded_output);
     echo "</div>";
 
     echo "<div style='flex: 50%; padding: 10px; text-align: center; background-color: lightgray'>";
-    echo "<h2>Cost of Living:</h2>";
+    echo "<h2Custom >Cost of Living:</h2Custom>";
     array_to_table($column_info);
     echo "</div>";
 
@@ -213,12 +219,13 @@ else {
     echo "<h2 style='text-align: center'>Conclusion:</h2>";
     echo "<h4 style='text-align: center;'>Based on all of the given information $message </h4>";
     echo "<br>";
-    echo "<hr>";
+
 }
 ?>
 
 </body>
 <footer>
+    <hr>
     This information was taken from <a href="https://www.levels.fyi/">levels.fyi</a> and <a href="https://livingwage.mit.edu">livingwage.mit.edu</a>
 </footer>
 </html>
