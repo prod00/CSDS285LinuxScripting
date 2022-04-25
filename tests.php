@@ -167,7 +167,7 @@ else {
 
     #echo $before_taxes;
     if ($before_taxes < intval($decoded_output["zeroth"])) {
-        $message = "you can to make below the 0th percentile of $" . intval($decoded_output["zeroth"]);
+        $message = "we have found 0 salaries of your position in the area lower than your cost of living";
 
     } else if ($before_taxes < intval($decoded_output["twentieth"])) {
         $message = "you need to make above the 0th percentile and less than the 25th percentile: $" . intval($decoded_output["zeroth"]) . " - $" . intval($decoded_output["twentieth"]);
@@ -182,7 +182,7 @@ else {
         $message = "you need to make above the 75th percentile and less than the 100th percentile: $" . intval($decoded_output["seventy_fifth"]) . " - $" . intval($decoded_output["one_hundreth"]);
 
     } else {
-        $message = "you need to make above the 100th percentile of $" . intval($decoded_output["one_hundreth"]);
+        $message = "we have found 0 salaries of your position in the area higher than your cost of living";
 
     }
 
