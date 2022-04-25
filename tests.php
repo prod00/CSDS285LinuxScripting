@@ -1,15 +1,67 @@
+<!DOCTYPE html>
+<html>
+<body>
+<style>
+    body{
+        background: palegoldenrod;
+        font-family: Helvetica, sans-serif;
+        align-content: center;
+
+    }
+    footer{
+        text-align: center;
+
+    }
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    main {
+        display: flex;
+        justify-content: center;
+    }
+
+    table {
+        max-width: 100%;
+    }
+
+    tr:nth-child(odd) {
+        background-color: #eee;
+    }
+
+    th {
+        background-color: #555;
+        color: #fff;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 0.5em 1em;
+</style>
+
+<h1 style="text-align: center"><strong>Here is your personalized information!</strong></h1>
+
 <?php
 function array_to_table($array) {
     $keys = array_keys($array);
-    echo "<table> <tbody>";
+    echo "<table style='margin-left: auto; margin-right: auto;'> <tbody>";
     for($i=0; $i < count($keys); $i++) {
         echo "<tr> <td> " . $keys[$i] . "</td> <td>" . $array[$keys[$i]] . "</td> </tr>";
     }
     echo "</tbody> </table>";
+
 }
 
 if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin"]) and empty($_GET["location"])){
-    echo "<h2>Enter a Loction: </h2>";
+    echo "<h2>Enter a Location: </h2>";
     echo "<form action='tests.php' method='GET'>";
     echo "<textarea cols=25 rows = 1 name='location' placeholder='Location'></textarea>";
     echo "<textarea cols=25 rows = 1 name='adults' placeholder='Adults'></textarea>";
@@ -103,6 +155,8 @@ else {
     $position = strtolower($_GET["position"]);
     $yoe = strtolower($_GET["yoe"]);
 
+    echo "<p style='text-align: center'> Position: " . $position . ", " . "Location: " . $location . ", " . "Years of Experience: " . $yoe . ", " . "Adults: " . $adults . ", " . "Adults Working: " . $adults_working . ", " . "Kids: " . $kids . "</p> <br>";
+    echo "<hr>";
     exec('python parser.py "' . $position . '" "' . $location . '" "' . $yoe . '" ', $python_output, $ret_code);
 
     //echo $python_output[0] . "HELLO";
@@ -113,30 +167,53 @@ else {
 
     #echo $before_taxes;
     if ($before_taxes < intval($decoded_output["zeroth"])) {
-        echo "You need to make below the 0th percentile reported on levels.fyi for your information";
+        $message = "you can to make below the 0th percentile of $" . intval($decoded_output["zeroth"]);
 
     } else if ($before_taxes < intval($decoded_output["twentieth"])) {
-        echo "You need to make above the 0th percentile and less than the 25th percentile reported on levels.fyi for your information";
+        $message = "you need to make above the 0th percentile and less than the 25th percentile: $" . intval($decoded_output["zeroth"]) . " - $" . intval($decoded_output["twentieth"]);
 
     } else if ($before_taxes < intval($decoded_output["fiftieth"])) {
-        echo "You need to make above the 25th percentile and less than 50th percentile reported on levels.fyi for your information";
+        $message = "you need to make above the 25th percentile and less than 50th percentile: $" . intval($decoded_output["twentieth"]) . " - $" . intval($decoded_output["fiftieth"]);
 
     } else if ($before_taxes < intval($decoded_output["seventy_fifth"])) {
-        echo "You need to make above the 50th percentile and less than 75th percentile reported on levels.fyi for your information";
+        $message = "you need to make above the 50th percentile and less than 75th percentile: $" . intval($decoded_output["fiftieth"]) . " - $" . intval($decoded_output["seventy_fifth"]);
 
     } else if ($before_taxes < intval($decoded_output["one_hundreth"])) {
-        echo "You need to make above the 75th percentile and less than the 100th percentile reported on levels.fyi for your information";
+        $message = "you need to make above the 75th percentile and less than the 100th percentile: $" . intval($decoded_output["seventy_fifth"]) . " - $" . intval($decoded_output["one_hundreth"]);
 
     } else {
-        echo "You need to make above the 100th percentile reported on levels.fyi for your information";
-        echo nl2br("\n");
-        echo "This may not be liveable without considerable savings.";
+        $message = "you need to make above the 100th percentile of $" . intval($decoded_output["one_hundreth"]);
+
     }
-    echo nl2br("\n");
-    echo "As a reminder, your info was: " . "<br>" . "Position: " . $position . "<br>" . "Location: " . $location . "<br>" . "Years of Experience: " . $yoe . "<br>" . "Adults: " . $adults . "<br>" . "Adults Working: " . $adults_working . "<br>" . "Kids: " . $kids . "<br>";
+
     # Output all column data
+    echo "<div style='display: flex'>";
+    echo "<div style='flex: 50%; padding: 10px; text-align: center; background-color: lightgray'>";
+    echo "<h2>Salary Information:</h2>";
     array_to_table($decoded_output);
+    echo "</div>";
+
+    echo "<div style='flex: 50%; padding: 10px; text-align: center; background-color: lightgray'>";
+    echo "<h2>Cost of Living:</h2>";
     array_to_table($column_info);
+    echo "</div>";
+
+    echo "</div>";
+
+    echo "<hr>";
+
+
+    echo "<h2 style='text-align: center'>Conclusion:</h2>";
+    echo "<h4 style='text-align: center;'>Based on all of the given information $message </h4>";
+    echo "<br>";
+    echo "<hr>";
 }
 ?>
+
+</body>
+<footer>
+    This information was taken from <a href="https://www.levels.fyi/">levels.fyi</a> and <a href="https://livingwage.mit.edu">livingwage.mit.edu</a>
+</footer>
+</html>
+
 
