@@ -89,7 +89,15 @@ else {
         "dallas" => "19100",
         "san jose" => "41940",
         "fort worth" => "19100",
-        "jacksonville" => "27260"
+        "jacksonville" => "27260",
+        "san francisco" => "41860",
+        "seattle" => "42660",
+        "san diego" => "41740",
+        "miami" => "33100",
+        "nashville" => "34980",
+        "el paso" => "21340",
+        "cleveland" => "17460",
+        "baltimore" => "12580"
     );
 
     if ($locations[$location]) {
