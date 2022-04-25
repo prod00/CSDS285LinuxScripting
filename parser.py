@@ -17,7 +17,7 @@ def main(argv):
             salaries.append(float(datum["totalyearlycompensation"]) * 1000)
 
     try:
-        salary_range = f"mean={round(np.mean(salaries),2)}&zeroth={np.percentile(salaries, 0, axis = 0)}&twentieth={np.percentile(salaries, 25, axis = 0)}&fiftieth={np.percentile(salaries, 50, axis = 0)}&seventy_fifth={np.percentile(salaries, 75, axis = 0)}&one_hundreth={np.percentile(salaries, 100, axis =0)}&standard_deviation={round(np.std(salaries),2)}"
+        salary_range = f"mean={round(np.mean(salaries),2)}&zeroth={np.percentile(salaries, 1, axis = 0)}&twentieth={np.percentile(salaries, 25, axis = 0)}&fiftieth={np.percentile(salaries, 50, axis = 0)}&seventy_fifth={np.percentile(salaries, 75, axis = 0)}&one_hundreth={np.percentile(salaries, 99, axis =0)}&standard_deviation={round(np.std(salaries),2)}"
 
         print(salary_range)
         return salary_range
