@@ -34,7 +34,6 @@
 </style>
 
 <?php
-use voku\helper\HtmlDomParser;
 if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin"]) and empty($_GET["location"])){
 
     echo "<h2>Enter a Loction: </h2>";
@@ -137,12 +136,7 @@ else{
         $airbnb_url = str_replace("price_max=MAXPRICE&price_min=MINPRICE&", "",$airbnb_url);
         $vrbo_url = str_replace("/maxNightlyPrice/MAXPRICE", "", $vrbo_url);
         $vrbo_url = str_replace("MINPRICE", 0, $vrbo_url);
-        
-        
-        
     }
-
-
 
     echo "<a href='{$airbnb_url}' class='link' target='_blank'>Custom Airbnb Link</a>";
     echo "<a href='{$vrbo_url}' class='link' target='_blank'>Custom Vrbo Link</a>";
