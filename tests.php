@@ -47,7 +47,7 @@
         padding: 0.5em 1em;
 </style>
 
-<h1 style="text-align: center"><strong>Here is your personalized information!</strong></h1>
+<h1 style="text-align: center"><strong>City-Search</strong></h1>
 
 <?php
 function array_to_table($array) {
@@ -61,9 +61,8 @@ function array_to_table($array) {
 }
 
 if (empty($_GET["location"]) and empty($_GET["people"]) and empty($_GET["checkin"]) and empty($_GET["location"])){
-    echo "<h2>Enter a Location: </h2>";
     echo "<form action='tests.php' method='GET'>";
-    echo "<textarea cols=25 rows = 1 name='location' placeholder='Location'></textarea>";
+    echo "<textarea cols=25 rows = 1 name='location' placeholder='City'></textarea>";
     echo "<textarea cols=25 rows = 1 name='adults' placeholder='Adults'></textarea>";
     echo "<textarea cols=25 rows = 1 name='adultswork' placeholder='Adults Working'></textarea>";
     echo "<textarea cols=25 rows = 1 name='kids' placeholder='Kids'></textarea>";
@@ -167,7 +166,7 @@ else {
 
     #echo $before_taxes;
     if ($before_taxes < intval($decoded_output["zeroth"])) {
-        $message = "you can to make below the 0th percentile of $" . intval($decoded_output["zeroth"]);
+        $message = "we have found 0 salaries of your position in the area lower than your cost of living";
 
     } else if ($before_taxes < intval($decoded_output["twentieth"])) {
         $message = "you need to make above the 0th percentile and less than the 25th percentile: $" . intval($decoded_output["zeroth"]) . " - $" . intval($decoded_output["twentieth"]);
@@ -182,7 +181,7 @@ else {
         $message = "you need to make above the 75th percentile and less than the 100th percentile: $" . intval($decoded_output["seventy_fifth"]) . " - $" . intval($decoded_output["one_hundreth"]);
 
     } else {
-        $message = "you need to make above the 100th percentile of $" . intval($decoded_output["one_hundreth"]);
+        $message = "we have found 0 salaries of your position in the area higher than your cost of living";
 
     }
 
