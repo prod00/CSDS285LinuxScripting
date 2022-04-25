@@ -182,11 +182,11 @@ else {
     if ($before_taxes < intval($decoded_output["zeroth"])) {
         $message = "we have found 0 salaries of your position in the area lower than your cost of living";
 
-    } else if ($before_taxes < intval($decoded_output["twentieth"])) {
+    } else if ($before_taxes < intval($decoded_output["twenty_fifth"])) {
         $message = "you need to make above the 0th percentile: $" . intval($decoded_output["zeroth"]);
 
     } else if ($before_taxes < intval($decoded_output["fiftieth"])) {
-        $message = "you need to make above the 25th percentile: $" . intval($decoded_output["twentieth"]);
+        $message = "you need to make above the 25th percentile: $" . intval($decoded_output["twenty_fifth"]);
 
     } else if ($before_taxes < intval($decoded_output["seventy_fifth"])) {
         $message = "you need to make above the 50th percentile: $" . intval($decoded_output["fiftieth"]);
